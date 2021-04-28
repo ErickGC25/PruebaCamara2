@@ -127,7 +127,7 @@
 <body>
     <div class="container-fluid">
         <div>
-            <h1>Escanner 1.0.8</h1>
+            <h1>Escanner 1.0.9</h1>
             <button class="btn btn-success" id="btnCodigo">Codigo</button>
         </div>
     </div>
@@ -399,6 +399,10 @@
                             setTimeout(scan, 300);
                             }
                         }
+                },
+                willClose: () => {
+                    let res = "";
+                    openSweetQR(res);
                 },
                 showCloseButton: true,
             });
