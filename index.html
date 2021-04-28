@@ -127,7 +127,7 @@
 <body>
     <div class="container-fluid">
         <div>
-            <h1>Escanner 1.0.4</h1>
+            <h1>Escanner 1.0.5</h1>
             <button class="btn btn-success" id="btnCodigo">Codigo</button>
         </div>
     </div>
@@ -344,7 +344,6 @@
                             outputData.innerText = res;
                             inputValor.value = res;
                             scanning = false;
-                            resultadoParrafo.textContent = `${res} Mandando a BD`;  
                             video.srcObject.getTracks().forEach(track => {
                                 track.stop();
                             });
@@ -352,6 +351,7 @@
                             qrResult.hidden = false;
                             btnScanQR.hidden = false;
                             canvasElement.hidden = true;
+                            resultadoParrafo.textContent = `${res} Mandando a BD`;  
                             }
                         };
 
@@ -372,9 +372,9 @@
                         };
 
                         function tick() {
-                            canvasElement.height = 270;
+                            canvasElement.height = 320;
                             canvasElement.width = 270;
-                            canvasElement.border = '3px dotted #7526bf'
+                            
                             canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
                         
                             scanning && requestAnimationFrame(tick);
