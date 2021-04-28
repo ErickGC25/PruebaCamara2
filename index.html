@@ -127,6 +127,7 @@
 <body>
     <div class="container-fluid">
         <div>
+            <h1>Escanner 1.0.1</h1>
             <button class="btn btn-success" id="btnCodigo">Codigo</button>
         </div>
     </div>
@@ -372,8 +373,8 @@
                         };
 
                         function tick() {
-                            canvasElement.height = video.videoHeight;
-                            canvasElement.width = video.videoWidth;
+                            canvasElement.height = "10rem";
+                            canvasElement.width = "10rem";
                             canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
                         
                             scanning && requestAnimationFrame(tick);
