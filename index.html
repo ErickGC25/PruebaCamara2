@@ -1,0 +1,396 @@
+<style>
+
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    textarea:-webkit-autofill,
+    textarea:-webkit-autofill:hover,
+    textarea:-webkit-autofill:focus,
+    select:-webkit-autofill,
+    select:-webkit-autofill:hover,
+    select:-webkit-autofill:focus {
+        -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+        transition: background-color 5000s ease-in-out 0s;
+    }
+
+    .borderEstatus {
+        border-radius: 10px 10px 10px 10px;
+        border: 1px solid rgba(66, 73, 73, 0.4);
+        margin: 5px;
+    }
+
+    .row:first-child .form-item {
+        border-top: 1px solid #fff;
+    }
+
+    .form-item {
+        position: relative;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid rgb(228, 228, 228);
+    }
+
+        .form-item input,
+        .form-item textarea {
+            z-index: 1;
+            position: relative;
+            padding-right: 0;
+            padding-left: 0;
+            border: 0;
+            border-radius: 0;
+            font-size: 13px;
+            background: 0 0;
+            box-shadow: none !important;
+            resize: none;
+            width: 100%;
+        }
+
+            .form-item input:focus,
+            .form-item textarea:focus {
+                outline: 0
+            }
+
+        .form-item label {
+            display: block;
+            z-index: 0;
+            position: relative;
+            top: 2em;
+            margin: 0;
+            font-size: .85em;
+            line-height: 1.764705882em;
+            vertical-align: middle;
+            vertical-align: baseline;
+            opacity: 0;
+            transition: top .3s ease, opacity .3s ease;
+        }
+
+    .form-item-filled label {
+        top: 0;
+        opacity: 1;
+        color: #aaa;
+    }
+
+    .form-item-focused label {
+        color: #722872;
+    }
+
+    .form-item-color {
+        border-bottom: 2px solid rgb(129, 21, 179);
+    }
+
+    .form-item-color-black {
+        border-bottom: 2px solid rgb(83, 83, 83);
+    }
+
+    .seccion-codigoQR {
+        display: grid;
+        grid-template-columns: 25% 50% 25%;
+        margin-top: 3rem;
+    }
+
+    .seccion-superior-QR {
+        display: grid;
+        grid-template-columns: 40% 60%;
+        align-items: center;
+    }
+
+    .seccion-camara-escaneo {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .seccion-inventario-QR {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .InventoryQR {
+        display: grid;
+        column-gap: 3rem;
+        grid-template-columns: repeat(2,max-content);
+        font-size: 1.3rem;
+        font-weight: 400;
+        text-align: left;
+    }
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div>
+            <button class="btn btn-success" id="btnCodigo">Codigo</button>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<!-- Import From DevExtreme -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.4.0/polyfill.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/3.3.1/exceljs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.6/quill.min.js"></script>
+
+<!-- ... -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<!-- DevExtreme themes -->
+<link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/20.1.4/css/dx.common.css">
+<link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/20.1.4/css/dx.material.purple.light.compact.css">
+<!-- DevExtreme library -->
+<script type="text/javascript" src="https://cdn3.devexpress.com/jslib/20.1.4/js/dx.all.js"></script>
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+<!-- QR CODE READER -->
+<script src="https://rawgit.com/sitepoint-editors/jsqrcode/master/src/qr_packed.js"></script>
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
+
+<script>
+        $(function () {
+            $("body")
+                .on("input propertychange", ".form-item", function (e) {
+                    $(this).toggleClass("form-item-filled", !!$(e.target).val());
+                })
+                .on("focus", ".form-item", function () {
+                    $(this).addClass("form-item-focused");
+                    $(this).addClass("form-item-color");
+                    $(this).removeClass("form-item-color-black");
+                })
+                .on("blur", ".form-item", function () {
+                    $(this).removeClass("form-item-focused");
+                    $(this).removeClass("form-item-color");
+                })
+                .on("mouseover", ".form-item", function () {
+                    $(this).addClass("form-item-color-black");
+                })
+                .on("mouseout", ".form-item", function () {
+                    $(this).removeClass("form-item-color-black");
+                });
+        });
+
+        $("#btnCodigo").click(() => {
+            openSweetQR();
+        })
+
+        function openSweetQR() {
+            swal.fire({
+                title: `<div><h2>Código QR</h2></div>`,
+                html: `<div class="contenido-principal-QR">
+                                <div class="seccion-superior-QR">
+                                    <div class="col-sm-8">
+                                        <div class="form-item">
+                                            <label for="ProductoQR">Id Producto</label>
+                                            <input id="ProductoQR" type="text" placeholder="Id Producto">
+                                        </div>
+                                    </div>
+                                    <div class="seccion-camara-escaneo">
+                                        <div>
+                                            <a id="accesoCamara" class="btn">
+                                                <img src="https://img.icons8.com/nolan/35/google-images.png"/>
+                                            </a>
+                                            <p>Escanear código QR</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="seccionInventarioQR" class="seccion-inventario-QR">
+                                    <div>
+                                    </div>
+                                    <div id="InventoryQR" class="InventoryQR"></div>
+                                </div>
+                                <div class="seccion-codigoQR">
+                                    <div class="">
+                                        <a class="btn" id="GenerarCodigo">
+                                            <img src="https://img.icons8.com/nolan/40/qr-code.png"/>
+                                        </a>
+                                        <p>Generar código QR</p>
+                                    </div>
+                                    <div id="QRGenerado" class="CodigoQR">
+                                        
+                                    </div>                                  
+                                </div>
+                           </div>
+                        `,
+                width: "800px",
+                didOpen: () => {
+                    const inputIdQR = document.querySelector("#ProductoQR");
+                    const seccionInventario = document.querySelector("#InventoryQR");
+
+                    inputIdQR.addEventListener("change", () => {
+
+                        const IdCodQr = inputIdQR.value;
+                        console.log(IdCodQr)
+                        if (IdCodQr !== "") {
+                            const IDInventario = document.querySelector("#ProductoQR").value;
+                            console.log(IDInventario);
+                            $("#GenerarCodigo").click(() => {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "/CodigoQR/GenerateQRCode",
+                                    data: { QRCodeText: IDInventario },
+                                    success: (data) => {
+                                        let ImagePath = data.split("~");
+                                        //console.log(ImagePath[1])
+                                        LimpiarCodigoQR();
+                                        $("#QRGenerado").append(
+                                            `<a class="btn" id="ConvertPdf">
+                                                <img src="${ImagePath[1]}">
+                                            </a>`
+                                        );
+                                        $("#ConvertPdf").click(() => {
+                                            $.ajax({
+                                                type: "Post",
+                                                url: "/CodigoQR/ConvertImageToPdf",
+                                                data: { ImagePath: 'QrCode.jpg' },
+                                                success: function () {
+                                                    OpenPdf();
+                                                }
+                                            })
+                                        })
+                                    }
+                                })
+                            })
+                        }
+                    });
+
+                    $("#accesoCamara").click(()=> {
+                        abrirSweetCamara();
+
+                    })
+                    function LimpiarCodigoQR() {
+                        const QRGenerado = document.querySelector("#QRGenerado");
+                        while (QRGenerado.firstChild) {
+                            QRGenerado.removeChild(QRGenerado.firstChild);
+                        }
+                    }
+                    function limpiarProductosPrevios() {
+                        const seccionInventario = document.querySelector("#InventoryQR");
+                        while (seccionInventario.firstChild) {
+                            seccionInventario.removeChild(seccionInventario.firstChild);
+                        }
+                    }
+                    
+                },
+                showCloseButton: true,
+            })
+        }
+
+        function OpenPdf() {
+            Swal.fire({
+                title: '',
+                html:
+                    '<iframe style="width:80%; height:650px" src="/Images/CodigoQR.pdf" frameborder="0"></iframe>',
+                showCancelButton: false,
+                showCloseButton: true,
+                width: 900 + 'px',
+                height: 800 + 'px',
+                confirmButtonText: 'Cerrar',
+                showLoaderOnConfirm: true,
+                willClose: () => {
+                    openSweetQR();
+                }
+
+            })
+        }
+
+        function abrirSweetCamara() {
+            swal.fire({
+                title: "",
+                html: `
+                <div id="container">
+                    <h2>QR Code Scanner 5.3</h2>
+                    <a id="btn-scan-qr"><img src="https://img.icons8.com/nolan/35/google-images.png"/></a>
+                    <canvas hidden="" id="qr-canvas"></canvas> 
+                    <div id="qr-result" hidden="">
+                        <b>Data:</b> <span id="outputData"></span>
+                    </div>
+                    <div class="form-item">
+                        <label for="inputValorQR">Valor del QR</label>
+                        <input id="inputValorQR" placeholder="Valor del QR">    
+                    </div>
+                    <p id="ResultadoParrafo"></p>
+                </div>
+                `,
+                didOpen: ()=> {     
+                        const video = document.createElement("video");
+                        const canvasElement = document.getElementById("qr-canvas");
+                        const canvas = canvasElement.getContext("2d");
+                        const inputValor = document.querySelector("#inputValorQR");
+                        const qrResult = document.getElementById("qr-result");
+                        const outputData = document.getElementById("outputData");
+                        const btnScanQR = document.getElementById("btn-scan-qr");
+                        const resultadoParrafo = document.querySelector("#ResultadoParrafo");
+
+                        let scanning = false;
+
+                        qrcode.callback = (res) => {
+                            if (res) {
+                            outputData.innerText = res;
+                            inputValor.value = res;
+                            scanning = false;
+                            resultadoParrafo.textContent = `${res} Mandando a BD`;  
+                            video.srcObject.getTracks().forEach(track => {
+                                track.stop();
+                            });
+                            
+                            qrResult.hidden = false;
+                            btnScanQR.hidden = false;
+                            canvasElement.hidden = true;
+                            }
+                        };
+
+                        btnScanQR.onclick = () =>{
+                        navigator.mediaDevices
+                            .getUserMedia({ video: { facingMode: "environment" } }) // User / 
+                            .then(function(stream) {
+                            scanning = true;
+                            qrResult.hidden = true;
+                            btnScanQR.hidden = true;
+                            canvasElement.hidden = false;
+                            video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
+                            video.srcObject = stream;
+                            video.play();
+                            tick();
+                            scan();
+                            });
+                        };
+
+                        function tick() {
+                            canvasElement.height = video.videoHeight;
+                            canvasElement.width = video.videoWidth;
+                            canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+                        
+                            scanning && requestAnimationFrame(tick);
+                        }
+
+                        function scan() {
+                            try {
+                            qrcode.decode();
+                            } catch (e) {
+                            setTimeout(scan, 300);
+                            }
+                        }
+                },
+                showCloseButton: true,
+            });
+
+        }
+
+
+</script>
