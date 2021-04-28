@@ -127,7 +127,7 @@
 <body>
     <div class="container-fluid">
         <div>
-            <h1>Scanner 1.3.2</h1>
+            <h1>Scanner 1.3.3</h1>
             <button class="btn btn-success" id="btnCodigo">Codigo</button>
         </div>
     </div>
@@ -404,6 +404,9 @@
                             console.log("Escanenado");
                             qrcode.decode();
                             } catch (e) {
+                            video.srcObject.getTracks().forEach(track => {
+                                track.stop();
+                            });
                             setTimeout(scan, 300);
                             }
                         }
