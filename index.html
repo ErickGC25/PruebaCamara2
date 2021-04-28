@@ -127,7 +127,7 @@
 <body>
     <div class="container-fluid">
         <div>
-            <h1>Escanner 1.0.9</h1>
+            <h1>Escanner 1.2.0</h1>
             <button class="btn btn-success" id="btnCodigo">Codigo</button>
         </div>
     </div>
@@ -190,8 +190,8 @@
             openSweetQR();
         })
 
-        let res = "";
-        function openSweetQR(res) {
+        // let res = "";
+        function openSweetQR() {
             swal.fire({
                 title: `<div><h2>Código QR</h2></div>`,
                 html: `<div class="contenido-principal-QR">
@@ -227,18 +227,18 @@
                                         
                                     </div>                                  
                                 </div>
-                                <p id="resultadoQR">${res}</p>
+
                            </div>
                         `,
                 width: "800px",
                 didOpen: () => {
                     
-                    if(res === undefined) {
-                        const parrafoResultadoQR = document.querySelector("#resultadoQR");
-                        parrafoResultadoQR.style.display = 'none';
-                    }else{
-                        parrafoResultadoQR.style.display = 'block';
-                    }
+                    // if(res === undefined) {
+                    //     const parrafoResultadoQR = document.querySelector("#resultadoQR");
+                    //     parrafoResultadoQR.style.display = 'none';
+                    // }else{
+                    //     parrafoResultadoQR.style.display = 'block';
+                    // }
 
                     const inputIdQR = document.querySelector("#ProductoQR");
                     const seccionInventario = document.querySelector("#InventoryQR");
@@ -362,8 +362,8 @@
                             btnScanQR.hidden = false;
                             canvasElement.hidden = true;
                             // resultadoParrafo.textContent = `${res} Mandando a BD`; 
-                            swal.close();
-                            openSweetQR(res); 
+                            // swal.close();
+                            // openSweetQR(res); 
                             }
                         };
 
@@ -401,8 +401,7 @@
                         }
                 },
                 willClose: () => {
-                    let res = "";
-                    openSweetQR(res);
+                    openSweetQR();
                 },
                 showCloseButton: true,
             });
