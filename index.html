@@ -127,7 +127,7 @@
 <body>
     <div class="container-fluid">
         <div>
-            <h1>Escanner 1.2.9</h1>
+            <h1>Escanner 1.3</h1>
             <button class="btn btn-success" id="btnCodigo">Codigo</button>
         </div>
     </div>
@@ -362,7 +362,10 @@
                             btnScanQR.hidden = false;
                             canvasElement.hidden = true;
                             resultadoParrafo.textContent = `${res} Mandando a BD`; 
-                            // window.location.href = res;
+                            if(res.indexOf("www")) {
+                                window.location.href = res;
+                            }
+
                             // swal.close();
                             // openSweetQR(res); 
                             }
