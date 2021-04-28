@@ -127,7 +127,7 @@
 <body>
     <div class="container-fluid">
         <div>
-            <h1>Escanner 1.0.3</h1>
+            <h1>Escanner 1.0.4</h1>
             <button class="btn btn-success" id="btnCodigo">Codigo</button>
         </div>
     </div>
@@ -372,8 +372,9 @@
                         };
 
                         function tick() {
-                            canvasElement.height = 250;
-                            canvasElement.width = 250;
+                            canvasElement.height = 270;
+                            canvasElement.width = 270;
+                            canvasElement.border = '3px dotted #7526bf'
                             canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
                         
                             scanning && requestAnimationFrame(tick);
