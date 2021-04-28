@@ -127,7 +127,7 @@
 <body>
     <div class="container-fluid">
         <div>
-            <h1>Escanner 1.2.0</h1>
+            <h1>Escanner 1.2.1</h1>
             <button class="btn btn-success" id="btnCodigo">Codigo</button>
         </div>
     </div>
@@ -361,7 +361,7 @@
                             qrResult.hidden = false;
                             btnScanQR.hidden = false;
                             canvasElement.hidden = true;
-                            // resultadoParrafo.textContent = `${res} Mandando a BD`; 
+                            resultadoParrafo.textContent = `${res} Mandando a BD`; 
                             // swal.close();
                             // openSweetQR(res); 
                             }
@@ -402,6 +402,10 @@
                 },
                 willClose: () => {
                     openSweetQR();
+                    scanning = false;
+                            video.srcObject.getTracks().forEach(track => {
+                                track.stop();
+                    });
                 },
                 showCloseButton: true,
             });
