@@ -115,7 +115,7 @@
         text-align: left;
     }
     #qr-canvas {
-        border-radius: 5px;
+        border-radius: 7px;
         border: 4px solid rgb(21, 163, 109);
 
     }
@@ -355,7 +355,10 @@
                         const outputData = document.getElementById("outputData");
                         const btnScanQR = document.getElementById("btn-scan-qr");
                         const resultadoParrafo = document.querySelector("#ResultadoParrafo");
-
+                        var x = 4,
+                        y = 4,
+                        speed = 1,
+                        isBottom = false;
                         let scanning = false;
 
                         qrcode.callback = (res) => {
@@ -404,6 +407,17 @@
                         //Medidas del video
                         canvasElement.height = video.videoHeight;
                         canvasElement.width = video.videoWidth;
+                        canvas.fillStyle = '#07C';
+                        canvas.lineCap = 'round';
+                        canvas.shadowBlur = 18;
+                        canvas.shadowColor = "#07C";
+                        canvas.fillRect(x, y, 210, 10);
+                        
+                        if (!isBottom && y < canvas.height - 14) y += speed;
+                        else if (y === canvas.height - 14) isBottom = true;
+                        
+                        if (isBottom && y > 4) y -= speed;
+                        else if (y === 4) isBottom = false;
                         canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
 
                         scanning && requestAnimationFrame(tick);
