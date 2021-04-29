@@ -131,8 +131,10 @@
             <button class="btn btn-success" id="btnCodigo">Codigo</button>
         </div>
     </div>
+
 </body>
 </html>
+
 
 
 
@@ -326,7 +328,7 @@
                 html: `
                 <div id="container" style="display: flex; flex-direction: column;">
                     <a id="btn-scan-qr"><img src="https://img.icons8.com/nolan/35/google-images.png"/></a>
-                    <video id="video" style="width: 100%; height: auto;"></video>
+                    <video id="video"></video>
                     <canvas hidden="" id="qr-canvas"></canvas> 
                     <div id="qr-result" hidden="">
                         <b>Data:</b> <span id="outputData"></span>
@@ -393,9 +395,7 @@
                         };
 
 
-                        function tick() { 
-                            canvasElement.height = 320;
-                            canvasElement.width = 270;                          
+                        function tick() {                    
                             canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
                             scanning && requestAnimationFrame(tick);
                         }
