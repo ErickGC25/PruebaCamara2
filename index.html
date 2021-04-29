@@ -348,10 +348,6 @@
                         const outputData = document.getElementById("outputData");
                         const btnScanQR = document.getElementById("btn-scan-qr");
                         const resultadoParrafo = document.querySelector("#ResultadoParrafo");
-                        var x = 4,
-                        y = 4,
-                        speed = 1,
-                        isBottom = false;
 
                         let scanning = false;
 
@@ -401,17 +397,6 @@
                             canvasElement.height = 320;
                             canvasElement.width = 270;                          
                             canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
-                            canvas.fillStyle = '#07C';
-                            canvas.lineCap = 'round';
-                            canvas.shadowBlur = 18;
-                            canvas.shadowColor = "#07C";
-                            canvas.fillRect(x, y, 210, 10);
-                            
-                            if (!isBottom && y < canvas.height - 14) y += speed;
-                            else if (y === canvas.height - 14) isBottom = true;
-                            
-                            if (isBottom && y > 4) y -= speed;
-                            else if (y === 4) isBottom = false;
                             scanning && requestAnimationFrame(tick);
                         }
 
