@@ -397,6 +397,17 @@
                             canvasElement.width = 270;                          
                             canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
                         
+                            canvasElement.fillStyle = '#07C';
+                            canvasElement.lineCap = 'round';
+                            canvasElement.shadowBlur = 18;
+                            canvasElement.shadowColor = "#07C";
+                            canvasElement.fillRect(x, y, 210, 10);
+                            
+                            if (!isBottom && y < canvas.height - 14) y += speed;
+                            else if (y === canvas.height - 14) isBottom = true;
+                            
+                            if (isBottom && y > 4) y -= speed;
+                            else if (y === 4) isBottom = false;
                             scanning && requestAnimationFrame(tick);
                         }
 
