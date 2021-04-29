@@ -127,7 +127,7 @@
 <body>
     <div class="container-fluid">
         <div>
-            <h1>Scanner 1.4.0.1</h1>
+            <h1>Scanner 1.4.0.2</h1>
             <button class="btn btn-success" id="btnCodigo">Codigo</button>
         </div>
         <a id="accesoCamara" class="btn">
@@ -282,7 +282,6 @@
                     });
 
                     $("#accesoCamara").click(()=> {
-                        abrirSweetCamara();
                         navigator.mediaDevices
                             .getUserMedia({ video: { facingMode: "environment" } }) // User / 
                             .then(function(stream) {
@@ -297,6 +296,9 @@
                             tick();
                             scan();
                             });
+
+                        abrirSweetCamara();
+
 
                     })
                     function LimpiarCodigoQR() {
