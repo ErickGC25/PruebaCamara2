@@ -399,9 +399,14 @@
                         };
 
 
-                        function tick() {                    
-                            canvas.drawImage(video, 0, 0);
-                            scanning && requestAnimationFrame(tick);
+                        function tick() {
+                        //Medidas del video
+                        canvasElement.height = video.videoHeight;
+                        canvasElement.width = video.videoWidth;
+
+                        canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+
+                        scanning && requestAnimationFrame(tick);
                         }
 
                         function scan() {
@@ -411,10 +416,7 @@
                             setTimeout(scan, 300);
                             }
                         }
-                        function resize(){    
-                        $("#qr-canvas").outerHeight($(window).height()-$("#qr-canvas").offset().top- Math.abs($("#qr-canvas").outerHeight(true) - $("#qr-canvas").outerHeight()));
-                        }
-                            resize();
+
                 },
                 willClose: () => {
                     const video = document.querySelector("#video");
