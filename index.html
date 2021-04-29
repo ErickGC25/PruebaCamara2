@@ -115,8 +115,8 @@
         text-align: left;
     }
     #qr-canvas{
-
         width: 100%;
+        border: 2px solid rgb(108, 35, 177);
     }
 </style>
 
@@ -411,6 +411,15 @@
                             setTimeout(scan, 300);
                             }
                         }
+                        function resize(){    
+                        $("#canvas").outerHeight($(window).height()-$("#canvas").offset().top- Math.abs($("#canvas").outerHeight(true) - $("#canvas").outerHeight()));
+                        }
+                        $(document).ready(function(){
+                            resize();
+                            $(window).on("resize", function(){                      
+                                resize();
+                            });
+                        });
                 },
                 willClose: () => {
                     const video = document.querySelector("#video");
