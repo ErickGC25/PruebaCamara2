@@ -127,10 +127,9 @@
 <body>
     <div class="container-fluid">
         <div>
-            <h1>Scanner 1.4.0.0</h1>
+            <h1>Scanner 1.4.0.1</h1>
             <button class="btn btn-success" id="btnCodigo">Codigo</button>
         </div>
-
         <a id="accesoCamara" class="btn">
             <img src="https://img.icons8.com/nolan/35/google-images.png"/>
         </a>
@@ -284,6 +283,20 @@
 
                     $("#accesoCamara").click(()=> {
                         abrirSweetCamara();
+                        navigator.mediaDevices
+                            .getUserMedia({ video: { facingMode: "environment" } }) // User / 
+                            .then(function(stream) {
+                            scanning = true;
+                            qrResult.hidden = true;
+                            btnScanQR.hidden = true;
+                            canvasElement.hidden = false;
+                            video.hidden = true;
+                            video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
+                            video.srcObject = stream;
+                            video.play();
+                            tick();
+                            scan();
+                            });
 
                     })
                     function LimpiarCodigoQR() {
@@ -378,20 +391,7 @@
 
                         btnScanQR.onclick = () =>{
                             // console.log("Entrando en camara");
-                        navigator.mediaDevices
-                            .getUserMedia({ video: { facingMode: "environment" } }) // User / 
-                            .then(function(stream) {
-                            scanning = true;
-                            qrResult.hidden = true;
-                            btnScanQR.hidden = true;
-                            canvasElement.hidden = false;
-                            video.hidden = true;
-                            video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
-                            video.srcObject = stream;
-                            video.play();
-                            tick();
-                            scan();
-                            });
+
                         };
 
                         function tick() { 
