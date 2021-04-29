@@ -400,7 +400,7 @@
 
 
                         function tick() {                    
-                            canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
+                            canvas.drawImage(video, 0, 0);
                             scanning && requestAnimationFrame(tick);
                         }
 
@@ -412,14 +412,12 @@
                             }
                         }
                         function resize(){    
-                        $("#canvas").outerHeight($(window).height()-$("#canvas").offset().top- Math.abs($("#canvas").outerHeight(true) - $("#canvas").outerHeight()));
+                        $("#qr-canvas").outerHeight($(window).height()-$("#qr-canvas").offset().top- Math.abs($("#qr-canvas").outerHeight(true) - $("#qr-canvas").outerHeight()));
                         }
-                        $(document).ready(function(){
                             resize();
                             $(window).on("resize", function(){                      
                                 resize();
                             });
-                        });
                 },
                 willClose: () => {
                     const video = document.querySelector("#video");
