@@ -326,7 +326,7 @@
                 html: `
                 <div id="container" style="display: flex; flex-direction: column;">
                     <a id="btn-scan-qr"><img src="https://img.icons8.com/nolan/35/google-images.png"/></a>
-                    <video id="video" style="width: 5; height: 5;"></video>
+                    <video id="video" style="width: 100%; height: auto;"></video>
                     <canvas hidden="" id="qr-canvas"></canvas> 
                     <div id="qr-result" hidden="">
                         <b>Data:</b> <span id="outputData"></span>
@@ -338,7 +338,7 @@
                     <p id="ResultadoParrafo"></p>
                 </div>
                 `,
-                width: "60%",
+                width: "85%",
                 didOpen: ()=> {     
                         const video = document.querySelector("#video");
                         const canvasElement = document.getElementById("qr-canvas");
