@@ -415,9 +415,6 @@
                         $("#qr-canvas").outerHeight($(window).height()-$("#qr-canvas").offset().top- Math.abs($("#qr-canvas").outerHeight(true) - $("#qr-canvas").outerHeight()));
                         }
                             resize();
-                            $(window).on("resize", function(){                      
-                                resize();
-                            });
                 },
                 willClose: () => {
                     const video = document.querySelector("#video");
