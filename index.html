@@ -114,10 +114,6 @@
         font-weight: 400;
         text-align: left;
     }
-    #qr-canvas{
-        width: 100%;
-        border: 2px solid rgb(108, 35, 177);
-    }
 </style>
 
 <!DOCTYPE html>
@@ -332,7 +328,7 @@
                 html: `
                 <div id="container" style="display: flex; flex-direction: column;">
                     <a id="btn-scan-qr"><img src="https://img.icons8.com/nolan/35/google-images.png"/></a>
-                    <video id="video"></video>
+                    <video id="video" style="width: 5px; height:5px" ></video>
                     <canvas hidden="" id="qr-canvas"></canvas> 
                     <div id="qr-result" hidden="">
                         <b>Data:</b> <span id="outputData"></span>
@@ -403,7 +399,6 @@
                         //Medidas del video
                         canvasElement.height = video.videoHeight;
                         canvasElement.width = video.videoWidth;
-
                         canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
 
                         scanning && requestAnimationFrame(tick);
