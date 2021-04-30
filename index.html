@@ -403,13 +403,13 @@
 
                         function tick() {
                         //Medidas del video
-                        canvas.clearRect(0, 0, canvasElement.width, canvasElement.height);
+                        canvas.clearRect(video, 0, 0, canvasElement.width, canvasElement.height);
                         canvas.fillStyle = '#15a36d';
                         canvas.lineCap = 'round';
                         canvas.shadowBlur = 18;
                         canvas.shadowColor = "#15a36d";
                         canvas.fillRect(x, y, 291, 2);
-                        
+                        // canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
                         
                         if (!isBottom && y < canvasElement.height - 14) y += speed;
                         else if (y === canvasElement.height - 14) isBottom = true;
