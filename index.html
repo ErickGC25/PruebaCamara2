@@ -355,10 +355,6 @@
                         const outputData = document.getElementById("outputData");
                         const btnScanQR = document.getElementById("btn-scan-qr");
                         const resultadoParrafo = document.querySelector("#ResultadoParrafo");
-                        var x = 4,
-                        y = 4,
-                        speed = 1,
-                        isBottom = false;
                         qrcode.callback = (res) => {
                             // console.log(res);
                             if (res) {
@@ -407,17 +403,6 @@
                         canvasElement.height = video.videoHeight;
                         canvasElement.width = video.videoWidth;
                         canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
-                        canvas.fillStyle = '#15a36d';
-                        canvas.lineCap = 'round';
-                        canvas.shadowBlur = 18;
-                        canvas.shadowColor = "#15a36d";
-                        canvas.fillRect(x, y, 291, 1);
-                        
-                        if (!isBottom && y < canvasElement.height - 14) y += speed;
-                        else if (y === canvasElement.height - 14) isBottom = true;
-                        
-                        if (isBottom && y > 4) y -= speed;
-                        else if (y === 4) isBottom = false;
 
                         scanning && requestAnimationFrame(tick);
                         }
