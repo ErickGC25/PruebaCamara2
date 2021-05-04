@@ -132,8 +132,9 @@
 <body>
     <div class="container-fluid">
         <div>
-            <h1>Scanner 1.4.1</h1>
+            <h1>Scanner 1.4.2</h1>
             <button class="btn btn-success" id="btnCodigo">Codigo</button>
+            <button id="cameraOn" onclick="OpenCameraQR()"></button>
         </div>
     </div>
 
@@ -327,109 +328,98 @@
             })
         }
 
-        function abrirSweetCamara() {
+        function OpenCameraQR() {
             swal.fire({
                 title: "",
                 html: `
                 <div id="container" style="display: flex; flex-direction: column;">
-                    <a id="btn-scan-qr"><img src="https://img.icons8.com/nolan/35/google-images.png"/></a>
-                    <video id="video" style="width: 5px; height:5px" ></video>
-                    <canvas hidden="" id="qr-canvas"></canvas> 
-                    <div id="qr-result" hidden="">
-                        <b>Data:</b> <span id="outputData"></span>
+                    <div>
+                        <a id="btn-scan-qr" class="btn"><img src="https://img.icons8.com/nolan/30/compact-camera.png"/></a>
+                        <p style="font-size: 1.3rem;">Activar Cámara</p>
                     </div>
-                    <div class="form-item">
-                        <label for="inputValorQR">Valor del QR</label>
-                        <input id="inputValorQR" placeholder="Valor del QR">    
+                    <video id="video" style="width: 5px; height:5px" ></video>
+                    <canvas hidden="" id="qr-canvas"></canvas>
+                    <div style="margin-top: 3rem;">
+                        <h4>Contenido de la tarima</h4>
+                        <div id="Inventory"></div>
                     </div>
                     <p id="ResultadoParrafo"></p>
                 </div>
-                `,
-                width: "85%",
-                didOpen: ()=> {     
-                        const video = document.querySelector("#video");
-                        const canvasElement = document.getElementById("qr-canvas");
-                        const canvas = canvasElement.getContext("2d");
-                        const inputValor = document.querySelector("#inputValorQR");
-                        const qrResult = document.getElementById("qr-result");
-                        const outputData = document.getElementById("outputData");
-                        const btnScanQR = document.getElementById("btn-scan-qr");
-                        const resultadoParrafo = document.querySelector("#ResultadoParrafo");
-                        qrcode.callback = (res) => {
-                            // console.log(res);
-                            if (res) {
+                    `,
+                width: "70%",
+                didOpen: () => {
+                    const video = document.querySelector("#video");
+                    const canvasElement = document.getElementById("qr-canvas");
+                    const canvas = canvasElement.getContext("2d");
+                    const inputValor = document.querySelector("#inputValorQR");
+                    const outputData = document.getElementById("outputData");
+                    const btnScanQR = document.getElementById("btn-scan-qr");
+                    const resultadoParrafo = document.querySelector("#ResultadoParrafo");
+                    let scanning = false;
+                    qrcode.callback = (res) => {
+                        if (res) {
                             outputData.innerText = res;
                             inputValor.value = res;
                             scanning = false;
                             video.srcObject.getTracks().forEach(track => {
                                 track.stop();
                             });
-                            
-                            qrResult.hidden = false;
                             btnScanQR.hidden = false;
                             canvasElement.hidden = true;
-                            resultadoParrafo.textContent = `${res} Mandando a BD`; 
-                            if(res.includes("www") || res.includes("https" || res.includes(".com"))) {
-                                window.location.href = res;
-                            }
-
-                            // swal.close();
-                            // openSweetQR(res); 
-                            }
-                        };
-
-                        btnScanQR.onclick = () =>{
-                            // console.log("Entrando en camara");
+                            //Ajax para obtener datos de BD
+                            resultadoParrafo.textContent  = res;
+                            //Mandar a otra página
+                            //if (res.includes("www") || res.includes("https" || res.includes(".com"))) {
+                            //    window.location.href = res;
+                            //}
+                        }
+                    };
+                    btnScanQR.onclick = () => {
+                        //Acceso a camara o audio
                         navigator.mediaDevices
-                            .getUserMedia({ video: { facingMode: "environment" } }) // User / 
-                            .then(function(stream) {
-                            scanning = true;
-                            qrResult.hidden = true;
-                            btnScanQR.hidden = true;
-                            canvasElement.hidden = false;
-                            video.hidden = true;
-                            // video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
-                            video.srcObject = stream;
-                            video.play();
-                            tick();
-                            scan();
+                            .getUserMedia({ video: { facingMode: "environment" } }) // User - Camara Frontal // environment - Camara Trasera
+                            .then(function (stream) {
+                                scanning = true;
+                                btnScanQR.hidden = true;
+                                canvasElement.hidden = false;
+                                video.hidden = true;
+                                video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
+                                video.srcObject = stream;
+                                video.play();
+                                tick();
+                                scan();
                             });
-                        };
-
-
-                        function tick() {
+                    };
+                    function tick() {
                         //Medidas del video
-                        // canvas.clearRect(video, 0, 0, canvasElement.width, canvasElement.height);
                         canvasElement.height = video.videoHeight;
                         canvasElement.width = video.videoWidth;
                         canvas.drawImage(video, 0, 0, canvasElement.width, canvasElement.height);
-
                         scanning && requestAnimationFrame(tick);
-                        }
-
-                        function scan() {
-                            try {
+                    }
+                    function scan() {
+                        //Escanea Código QR
+                        try {
                             qrcode.decode();
-                            } catch (e) {
+                        } catch (e) {
                             setTimeout(scan, 300);
-                            }
                         }
+                    }
+                    
 
                 },
                 willClose: () => {
+                    //Detener grabación cuando se cierra sweetalert sin escanear
                     const video = document.querySelector("#video");
-                    if(video.srcObject != null) {
+                    if (video.srcObject != null) {
                         video.srcObject.getTracks().forEach(track => {
-                                track.stop();
+                            track.stop();
                         });
                     }
-
-                    openSweetQR();
+                    //openSweetQR();
                 },
                 showCloseButton: true,
             });
-
         }
-
 
 </script>
